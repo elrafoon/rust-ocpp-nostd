@@ -7,7 +7,7 @@ use crate::Vec;
 /// GetVariablesRequest, sent by the CSMS to the Charging Station.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct GetVariablesRequest<'a, const N_VARIABLES: usize = { crate::N_VARIABLES }> {
+pub struct GetVariablesRequest<'a, const N_VARIABLES: usize> {
     /// List of requested variables.
     #[serde(borrow)]
     pub get_variable_data: Vec<GetVariableDataType<'a>, N_VARIABLES>,

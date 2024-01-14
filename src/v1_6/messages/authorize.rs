@@ -5,11 +5,12 @@ use validator::Validate;
 // # From OCPP Specification
 // 6.1. Authorize.req
 #[cfg_attr(feature="std", derive(Validate))]
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, minicbor::Encode, minicbor::Decode, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeRequest<'a> {
     /// Required. This contains the identifier that needs to be authorized.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 20)))]
+    #[b(0)]
     pub id_tag: &'a str, // IdToken, should maybe be a type?
 }
 

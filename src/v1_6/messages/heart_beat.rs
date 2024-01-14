@@ -3,7 +3,7 @@ use chrono::{DateTime, Utc};
 use validator::Validate;
 
 #[cfg_attr(feature="std", derive(Validate))]
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, minicbor::Encode, minicbor::Decode, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct HeartbeatRequest {}
 

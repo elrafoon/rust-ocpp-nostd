@@ -42,6 +42,8 @@ mod update_status;
 mod update_type;
 mod value_format;
 
+pub use crate::date_time::DateTime;
+
 pub use self::authorization_data::AuthorizationData;
 pub use self::authorization_status::AuthorizationStatus;
 pub use self::availability_status::AvailabilityStatus;

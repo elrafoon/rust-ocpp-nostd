@@ -23,9 +23,14 @@ pub mod v1_6;
 #[cfg(feature = "v2_0_1")]
 pub mod v2_0_1;
 
+mod date_time;
+
 #[cfg(feature="std")]
-#[allow(type_alias_bounds)]
-pub type Vec<T: Sized, const N: usize> = std::vec::Vec<T>;
+mod std_vec;
+#[cfg(feature="std")]
+pub use std_vec::Vec;
 
 #[cfg(feature="no_std")]
-pub use heapless::Vec;
+mod heapless_vec;
+#[cfg(feature="no_std")]
+pub use heapless_vec::Vec;

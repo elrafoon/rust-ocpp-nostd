@@ -20,7 +20,7 @@ all-features = true
 maintenance = { status = "experimental" }
 
 [features]
-default = ["std", "v2_0_1"]
+default = ["std", "v1_6", "v2_0_1"]
 v1_6 = []
 v2_0_1 = []
 std = ["dep:validator", "serde/std", "regex", "chrono/clock"]
@@ -30,13 +30,14 @@ no_std = ["dep:heapless"]
 
 [dependencies]
 serde = { version = "1", default-features = false, features = ["derive"] }
-chrono = { version = "0.4.22", default-features = false, features = ["serde"] }
+chrono = { version = "0.4.31", default-features = false, features = ["serde"] }
 validator = { version = "0.16.0", features = ["derive"], optional = true }
 heapless = { version = "0", features = ["serde"], optional = true }
 regex = { version = "1", optional = true }
+minicbor = { version = "0.20.0", features = ["derive", "half"] }
 
 [dev-dependencies]
-mockall = "0.11.3"
-jsonschema = "0.16"
+mockall = "0.12.1"
+jsonschema = "0.17.1"
 serde_json = { version = "1" }
 pretty_env_logger = "0.4.0"

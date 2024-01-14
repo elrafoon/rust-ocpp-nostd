@@ -44,7 +44,7 @@ use chrono::{DateTime, Utc};
 use validator::Validate;
 
 #[cfg_attr(feature="std", derive(Validate))]
-#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Default)]
+#[derive(serde::Serialize, serde::Deserialize, minicbor::Encode, minicbor::Decode, Debug, Clone, PartialEq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationRequest<'a> {
     /// # From OCPP Specification
@@ -52,52 +52,61 @@ pub struct BootNotificationRequest<'a> {
     /// the Charge Point. Deprecated, will be removed in future version
     #[cfg_attr(feature="std", validate(length(min = 1, max = 25)))]
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[b(0)]
     pub charge_box_serial_number: Option<&'a str>,
 
     /// # From OCPP Specification
     /// Required. This contains a value that identifies the model of the ChargePoint.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 20)))]
+    #[b(1)]
     pub charge_point_model: &'a str,
 
     /// # From OCPP Specification
     /// Optional. This contains a value that identifies the serial number of the Charge Point.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 25)))]
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[b(2)]
     pub charge_point_serial_number: Option<&'a str>,
 
     /// # From OCPP Specification
     /// Required. This contains a value that identifies the vendor of the ChargePoint.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 20)))]
+    #[b(3)]
     pub charge_point_vendor: &'a str,
 
     /// # From OCPP Specification
     /// Optional. This contains the firmware version of the Charge Point.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 50)))]
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[b(4)]
     pub firmware_version: Option<&'a str>,
 
     /// # From OCPP Specification
     /// Optional. This contains the ICCID of the modem’s SIM card.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[b(5)]
     pub iccid: Option<&'a str>,
 
     /// # From OCPP Specification
     /// Optional. This contains the IMSI of the modem’s SIM card.
     #[cfg_attr(feature="std", validate(length(min = 1, max = 20)))]
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[b(6)]
     pub imsi: Option<&'a str>,
 
     /// # From OCPP Specification
     /// Optional. This contains the serial number of the main electrical meter of the Charge Point.
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature="std", validate(length(min = 1, max = 25)))]
+    #[b(7)]
     pub meter_serial_number: Option<&'a str>,
 
     /// # From OCPP Specification
     /// Optional. This contains the type of the main electrical meter of the Charge Point.
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature="std", validate(length(min = 1, max = 25)))]
+    #[b(8)]
     pub meter_type: Option<&'a str>,
 }
 
