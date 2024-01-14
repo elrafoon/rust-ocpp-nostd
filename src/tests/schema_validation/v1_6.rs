@@ -496,7 +496,7 @@ mod tests {
             status: GetCompositeScheduleStatus::Accepted,
             connector_id: Some(1),
             schedule_start: Some(Utc::now()),
-            charging_schedule: Some(ChargingSchedule {
+            charging_schedule: Some(ChargingSchedule::<0> {
                 duration: Some(1),
                 start_schedule: Some(Utc::now()),
                 charging_rate_unit: ChargingRateUnitType::W,
@@ -504,7 +504,7 @@ mod tests {
                     start_period: 0,
                     limit: 0.0,
                     number_phases: Some(1),
-                }],
+                }].into(),
                 min_charging_rate: Some(1.0),
             }),
         };
@@ -524,8 +524,8 @@ mod tests {
     }
     #[test]
     fn validate_get_configuration() {
-        let test = GetConfigurationRequest {
-            key: Some(vec![""]),
+        let test = GetConfigurationRequest::<0> {
+            key: Some(vec![""].into()),
         };
 
         let schema = include_str!("schemas/v1.6/json/GetConfiguration.json");
@@ -543,13 +543,13 @@ mod tests {
     }
     #[test]
     fn validate_get_configuration_response() {
-        let test = GetConfigurationResponse {
+        let test = GetConfigurationResponse::<0, 0> {
             configuration_key: Some(vec![KeyValue {
                 key: "",
                 readonly: false,
                 value: Some(""),
-            }]),
-            unknown_key: Some(vec![""]),
+            }].into()),
+            unknown_key: Some(vec![""].into()),
         };
 
         let schema = include_str!("schemas/v1.6/json/GetConfigurationResponse.json");
@@ -677,11 +677,11 @@ mod tests {
     }
     #[test]
     fn validate_meter_values() {
-        let test = MeterValuesRequest {
+        let test = MeterValuesRequest::<0, 0> {
             connector_id: 0,
             transaction_id: None,
-            meter_value: vec![MeterValue {
-                timestamp: Utc::now(),
+            meter_value: vec![MeterValue::<0> {
+                timestamp: Utc::now().into(),
                 sampled_value: vec![SampledValue {
                     value: "",
                     context: None,
@@ -690,8 +690,8 @@ mod tests {
                     phase: None,
                     location: None,
                     unit: None,
-                }],
-            }],
+                }].into(),
+            }].into(),
         };
 
         let schema = include_str!("schemas/v1.6/json/MeterValues.json");
@@ -726,7 +726,7 @@ mod tests {
     }
     #[test]
     fn validate_remote_start_transaction() {
-        let test = RemoteStartTransactionRequest {
+        let test = RemoteStartTransactionRequest::<0> {
             connector_id: None,
             id_tag: "",
             charging_profile: None,
@@ -882,7 +882,7 @@ mod tests {
     }
     #[test]
     fn validate_send_local_list() {
-        let test = SendLocalListRequest {
+        let test = SendLocalListRequest::<0> {
             list_version: 0,
             local_authorization_list: None,
             update_type: UpdateType::Differential,
@@ -933,7 +933,7 @@ mod tests {
                 recurrency_kind: None,
                 valid_from: None,
                 valid_to: None,
-                charging_schedule: ChargingSchedule {
+                charging_schedule: ChargingSchedule::<0> {
                     duration: None,
                     start_schedule: None,
                     charging_rate_unit: ChargingRateUnitType::W,
@@ -941,7 +941,7 @@ mod tests {
                         start_period: 0,
                         limit: 0.0,
                         number_phases: None,
-                    }],
+                    }].into(),
                     min_charging_rate: None,
                 },
             },
@@ -986,7 +986,7 @@ mod tests {
             id_tag: "",
             meter_start: 0,
             reservation_id: None,
-            timestamp: Utc::now(),
+            timestamp: Utc::now().into(),
         };
 
         let schema = include_str!("schemas/v1.6/json/StartTransaction.json");
@@ -1033,7 +1033,7 @@ mod tests {
             error_code: ChargePointErrorCode::ConnectorLockFailure,
             info: None,
             status: ChargePointStatus::Available,
-            timestamp: Some(Utc::now()),
+            timestamp: Some(Utc::now().into()),
             vendor_id: None,
             vendor_error_code: None,
         };
@@ -1070,10 +1070,10 @@ mod tests {
     }
     #[test]
     fn validate_stop_transaction() {
-        let test = StopTransactionRequest {
+        let test = StopTransactionRequest::<0, 0> {
             id_tag: None,
             meter_stop: 0,
-            timestamp: Utc::now(),
+            timestamp: Utc::now().into(),
             transaction_id: 0,
             reason: None,
             transaction_data: None,

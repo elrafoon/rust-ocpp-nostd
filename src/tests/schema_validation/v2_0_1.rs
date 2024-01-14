@@ -302,15 +302,15 @@ mod tests {
 
     #[test]
     fn validate_authorize_request() {
-        let test = AuthorizeRequest {
+        let test = AuthorizeRequest::<0, 0> {
             certificate: Some(""),
-            id_token: IdTokenType {
+            id_token: IdTokenType::<0> {
                 id_token: "",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "more than 5 characters",
                     kind: "",
-                }]),
+                }].into()),
             },
             iso_15118_certificate_hash_data: Some(vec![OCSPRequestDataType {
                 hash_algorithm: HashAlgorithmEnumType::SHA256,
@@ -318,7 +318,7 @@ mod tests {
                 issuer_key_hash: "",
                 serial_number: "",
                 responder_url: "",
-            }]),
+            }].into()),
         };
 
         let schema = include_str!("schemas/v2.0.1/AuthorizeRequest.json");
@@ -337,22 +337,22 @@ mod tests {
 
     #[test]
     fn validate_authorize_response() {
-        let test = AuthorizeResponse {
+        let test = AuthorizeResponse::<0, 0> {
             certificate_status: Some(AuthorizeCertificateStatusEnumType::Accepted),
             id_token_info: IdTokenInfoType {
                 status: AuthorizationStatusEnumType::Accepted,
                 cache_expiry_date_time: Some(Utc::now()),
                 charging_priority: Some(1),
                 language1: Some("English"),
-                evse_id: Some(vec![1]),
+                evse_id: Some(vec![1].into()),
                 language2: Some("Chinese"),
-                group_id_token: Some(IdTokenType {
+                group_id_token: Some(IdTokenType::<0> {
                     id_token: "",
                     kind: IdTokenEnumType::Central,
                     additional_info: Some(vec![AdditionalInfoType {
                         additional_id_token: "",
                         kind: "",
-                    }]),
+                    }].into()),
                 }),
                 personal_message: Some(MessageContentType {
                     format: MessageFormatEnumType::ASCII,
@@ -735,7 +735,7 @@ mod tests {
 
     #[test]
     fn validate_clear_variable_monitoring_request() {
-        let test = ClearVariableMonitoringRequest { id: vec![0] };
+        let test = ClearVariableMonitoringRequest::<0> { id: vec![0].into() };
         let schema = include_str!("schemas/v2.0.1/ClearVariableMonitoringRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
         let instance = serde_json::to_value(&test).unwrap();
@@ -752,7 +752,7 @@ mod tests {
 
     #[test]
     fn validate_clear_variable_monitoring_response() {
-        let test = ClearVariableMonitoringResponse {
+        let test = ClearVariableMonitoringResponse::<0> {
             clear_monitoring_result: vec![ClearMonitoringResultType {
                 status: ClearMonitoringStatusEnumType::Accepted,
                 id: 0,
@@ -760,7 +760,7 @@ mod tests {
                     reason_code: "",
                     additional_info: Some(""),
                 }),
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/ClearVariableMonitoringResponse.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -818,13 +818,13 @@ mod tests {
             report: false,
             clear: false,
             customer_identifier: Some("customer_identifier"),
-            id_token: Some(IdTokenType {
+            id_token: Some(IdTokenType::<0> {
                 id_token: "",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "additional_id_token",
                     kind: "type",
-                }]),
+                }].into()),
             }),
             customer_certificate: Some(CertificateHashDataType {
                 hash_algorithm: HashAlgorithmEnumType::SHA256,
@@ -1124,7 +1124,7 @@ mod tests {
     }
     #[test]
     fn validate_get_charging_profiles_request() {
-        let test = GetChargingProfilesRequest {
+        let test = GetChargingProfilesRequest::<0, 0> {
             request_id: 0,
             evse_id: Some(1),
             charging_profile: ChargingProfileCriterionType {
@@ -1132,8 +1132,8 @@ mod tests {
                     ChargingProfilePurposeEnumType::ChargingStationExternalConstraints,
                 ),
                 stack_level: Some(1),
-                charging_profile_id: Some(vec![1]),
-                charging_limit_source: Some(vec![ChargingLimitSourceEnumType::CSO]),
+                charging_profile_id: Some(vec![1].into()),
+                charging_limit_source: Some(vec![ChargingLimitSourceEnumType::CSO].into()),
             },
         };
         let schema = include_str!("schemas/v2.0.1/GetChargingProfilesRequest.json");
@@ -1195,7 +1195,7 @@ mod tests {
     fn validate_get_composite_schedule_response() {
         let test = GetCompositeScheduleResponse {
             status: GenericStatusEnumType::Accepted,
-            schedule: Some(CompositeScheduleType {
+            schedule: Some(CompositeScheduleType::<0> {
                 evse_id: 0,
                 duration: 0,
                 schedule_start: Utc::now(),
@@ -1205,7 +1205,7 @@ mod tests {
                     limit: 0.0,
                     number_phases: Some(1),
                     phase_to_use: Some(1),
-                }],
+                }].into(),
             }),
             status_info: Some(StatusInfoType {
                 reason_code: "",
@@ -1227,8 +1227,8 @@ mod tests {
     }
     #[test]
     fn validate_get_display_messages_request() {
-        let test = GetDisplayMessagesRequest {
-            id: Some(vec![1]),
+        let test = GetDisplayMessagesRequest::<0> {
+            id: Some(vec![1].into()),
             request_id: 0,
             priority: Some(MessagePriorityEnumType::AlwaysFront),
             state: Some(MessageStateEnumType::Charging),
@@ -1270,8 +1270,8 @@ mod tests {
     }
     #[test]
     fn validate_get_installed_certificate_ids_request() {
-        let test = GetInstalledCertificateIdsRequest {
-            certificate_type: Some(vec![GetCertificateIdUseEnumType::CSMSRootCertificate]),
+        let test = GetInstalledCertificateIdsRequest::<0> {
+            certificate_type: Some(vec![GetCertificateIdUseEnumType::CSMSRootCertificate].into()),
         };
         let schema = include_str!("schemas/v2.0.1/GetInstalledCertificateIdsRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1288,9 +1288,9 @@ mod tests {
     }
     #[test]
     fn validate_get_installed_certificate_ids_response() {
-        let test = GetInstalledCertificateIdsResponse {
+        let test = GetInstalledCertificateIdsResponse::<0, 0> {
             status: GetDisplayMessagesStatusEnumType::Accepted,
-            certificate_hash_data_chain: Some(vec![CertificateHashDataChainType {
+            certificate_hash_data_chain: Some(vec![CertificateHashDataChainType::<0> {
                 certificate_type: GetCertificateIdUseEnumType::V2GRootCertificate,
                 certificate_hash_data: CertificateHashDataType {
                     hash_algorithm: HashAlgorithmEnumType::SHA256,
@@ -1303,8 +1303,8 @@ mod tests {
                     issuer_name_hash: "issuer_name_hash",
                     issuer_key_hash: "issuer_key_hash",
                     serial_number: "serial_number",
-                }]),
-            }]),
+                }].into()),
+            }].into()),
             status_info: Some(StatusInfoType {
                 reason_code: "",
                 additional_info: Some(""),
@@ -1406,9 +1406,9 @@ mod tests {
     }
     #[test]
     fn validate_get_monitoring_report_request() {
-        let test = GetMonitoringReportRequest {
+        let test = GetMonitoringReportRequest::<0, 0> {
             request_id: 0,
-            monitoring_criteria: Some(vec![MonitoringCriterionEnumType::DeltaMonitoring]),
+            monitoring_criteria: Some(vec![MonitoringCriterionEnumType::DeltaMonitoring].into()),
             component_variable: Some(vec![ComponentVariableType {
                 component: ComponentType {
                     name: "",
@@ -1422,7 +1422,7 @@ mod tests {
                     name: "",
                     instance: Some("instance"),
                 }),
-            }]),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/GetMonitoringReportRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1461,9 +1461,9 @@ mod tests {
     }
     #[test]
     fn validate_get_report_request() {
-        let test = GetReportRequest {
+        let test = GetReportRequest::<0, 0> {
             request_id: 0,
-            component_criteria: Some(vec![ComponentCriterionEnumType::Active]),
+            component_criteria: Some(vec![ComponentCriterionEnumType::Active].into()),
             component_variable: Some(vec![ComponentVariableType {
                 component: ComponentType {
                     name: "name",
@@ -1477,7 +1477,7 @@ mod tests {
                     name: "name",
                     instance: Some("instance"),
                 }),
-            }]),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/GetReportRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1553,7 +1553,7 @@ mod tests {
     }
     #[test]
     fn validate_get_variables_request() {
-        let test = GetVariablesRequest {
+        let test = GetVariablesRequest::<0> {
             get_variable_data: vec![GetVariableDataType {
                 attribute_type: Some(AttributeEnumType::MaxSet),
                 component: ComponentType {
@@ -1568,7 +1568,7 @@ mod tests {
                     name: "name",
                     instance: Some("instance"),
                 },
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/GetVariablesRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1585,7 +1585,7 @@ mod tests {
     }
     #[test]
     fn validate_get_variables_response() {
-        let test = GetVariablesResponse {
+        let test = GetVariablesResponse::<0> {
             get_variable_result: vec![GetVariableResultType {
                 attribute_status: GetVariableStatusEnumType::Accepted,
                 attribute_type: Some(AttributeEnumType::Actual),
@@ -1606,7 +1606,7 @@ mod tests {
                     reason_code: "",
                     additional_info: Some(""),
                 }),
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/GetVariablesResponse.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1733,9 +1733,9 @@ mod tests {
     }
     #[test]
     fn validate_meter_values_request() {
-        let test = MeterValuesRequest {
+        let test = MeterValuesRequest::<0, 0> {
             evse_id: 0,
-            meter_value: vec![MeterValueType {
+            meter_value: vec![MeterValueType::<0> {
                 timestamp: Utc::now(),
                 sampled_value: vec![SampledValueType {
                     value: 0.0,
@@ -1753,8 +1753,8 @@ mod tests {
                         unit: Some("unit"),
                         multiplier: Some(1),
                     }),
-                }],
-            }],
+                }].into(),
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/MeterValuesRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1787,7 +1787,7 @@ mod tests {
     }
     #[test]
     fn validate_notify_charging_limit_request() {
-        let test = NotifyChargingLimitRequest {
+        let test = NotifyChargingLimitRequest::<0, 0, 0, 0, 0> {
             evse_id: Some(0),
             charging_limit: ChargingLimitType {
                 charging_limit_source: ChargingLimitSourceEnumType::EMS,
@@ -1804,7 +1804,7 @@ mod tests {
                     limit: 0.0,
                     number_phases: Some(0),
                     phase_to_use: Some(0),
-                }],
+                }].into(),
                 sales_tariff: Some(SalesTariffType {
                     id: Some(0),
                     sales_tariff_description: Some("sales_tariff_description"),
@@ -1821,11 +1821,11 @@ mod tests {
                                 cost_kind: CostKindEnumType::CarbonDioxideEmission,
                                 amount: 0,
                                 amount_multiplier: Some(0),
-                            }],
-                        }]),
-                    }],
+                            }].into(),
+                        }].into()),
+                    }].into(),
                 }),
-            }]),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/NotifyChargingLimitRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -1896,7 +1896,7 @@ mod tests {
     }
     #[test]
     fn validate_notify_display_messages_request() {
-        let test = NotifyDisplayMessagesRequest {
+        let test = NotifyDisplayMessagesRequest::<0> {
             request_id: 0,
             tbc: Some(false),
             message_info: Some(vec![MessageInfoType {
@@ -1919,7 +1919,7 @@ mod tests {
                         connector_id: Some(1),
                     }),
                 }),
-            }]),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/NotifyDisplayMessagesRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -2013,7 +2013,7 @@ mod tests {
     }
     #[test]
     fn validate_notify_ev_charging_schedule_request() {
-        let test = NotifyEVChargingScheduleRequest {
+        let test = NotifyEVChargingScheduleRequest::<0, 0, 0, 0> {
             time_base: Utc::now(),
             evse_id: 0,
             charging_schedule: ChargingScheduleType {
@@ -2027,7 +2027,7 @@ mod tests {
                     limit: 0.0,
                     number_phases: Some(0),
                     phase_to_use: Some(0),
-                }],
+                }].into(),
                 sales_tariff: Some(SalesTariffType {
                     id: Some(0),
                     sales_tariff_description: Some("sales_tariff_description"),
@@ -2044,9 +2044,9 @@ mod tests {
                                 cost_kind: CostKindEnumType::CarbonDioxideEmission,
                                 amount: 0,
                                 amount_multiplier: Some(1),
-                            }],
-                        }]),
-                    }],
+                            }].into(),
+                        }].into()),
+                    }].into(),
                 }),
             },
         };
@@ -2087,7 +2087,7 @@ mod tests {
     }
     #[test]
     fn validate_notify_event_request() {
-        let test = NotifyEventRequest {
+        let test = NotifyEventRequest::<0> {
             generated_at: Utc::now(),
             tbc: Some(false),
             seq_no: 0,
@@ -2115,7 +2115,7 @@ mod tests {
                     name: "",
                     instance: Some("instance"),
                 },
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/NotifyEventRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -2148,7 +2148,7 @@ mod tests {
     }
     #[test]
     fn validate_notify_monitoring_report_request() {
-        let test = NotifyMonitoringReportRequest {
+        let test = NotifyMonitoringReportRequest::<0, 0> {
             request_id: 0,
             tbc: Some(true),
             seq_no: 0,
@@ -2172,8 +2172,8 @@ mod tests {
                     value: 0.0,
                     kind: MonitorEnumType::UpperThreshold,
                     severity: 0,
-                }],
-            }]),
+                }].into(),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/NotifyMonitoringReportRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -2206,7 +2206,7 @@ mod tests {
     }
     #[test]
     fn validate_notify_report_request() {
-        let test = NotifyReportRequest {
+        let test = NotifyReportRequest::<0, 0> {
             request_id: 0,
             tbc: Some(false),
             seq_no: 0,
@@ -2230,7 +2230,7 @@ mod tests {
                     mutability: Some(MutabilityEnumType::ReadOnly),
                     persistent: Some(false),
                     constant: Some(false),
-                }],
+                }].into(),
                 variable_characteristics: Some(VariableCharacteristicsType {
                     unit: Some("unit"),
                     data_type: DataEnumType::String,
@@ -2239,7 +2239,7 @@ mod tests {
                     values_list: Some("values_list"),
                     supports_monitoring: false,
                 }),
-            }]),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/NotifyReportRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -2316,9 +2316,9 @@ mod tests {
     }
     #[test]
     fn validate_publish_firmware_status_notification_request() {
-        let test = PublishFirmwareStatusNotificationRequest {
+        let test = PublishFirmwareStatusNotificationRequest::<0> {
             status: PublishFirmwareStatusEnumType::Idle,
-            location: Some(vec!["location"]),
+            location: Some(vec!["location"].into()),
             request_id: Some(1),
         };
         let schema = include_str!("schemas/v2.0.1/PublishFirmwareStatusNotificationRequest.json");
@@ -2352,7 +2352,7 @@ mod tests {
     }
     #[test]
     fn validate_report_charging_profiles_request() {
-        let test = ReportChargingProfilesRequest {
+        let test = ReportChargingProfilesRequest::<0, 0, 0, 0, 0, 0> {
             request_id: 0,
             charging_limit_source: ChargingLimitSourceEnumType::EMS,
             tbc: Some(true),
@@ -2378,7 +2378,7 @@ mod tests {
                         limit: 0.0,
                         number_phases: Some(1),
                         phase_to_use: Some(4),
-                    }],
+                    }].into(),
                     sales_tariff: Some(SalesTariffType {
                         id: Some(1),
                         sales_tariff_description: Some("sales_tariff_description"),
@@ -2395,12 +2395,12 @@ mod tests {
                                     cost_kind: CostKindEnumType::CarbonDioxideEmission,
                                     amount: 0,
                                     amount_multiplier: Some(1),
-                                }],
-                            }]),
-                        }],
+                                }].into(),
+                            }].into()),
+                        }].into(),
                     }),
-                }],
-            }],
+                }].into(),
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/ReportChargingProfilesRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -2433,16 +2433,16 @@ mod tests {
     }
     #[test]
     fn validate_request_start_transaction_request() {
-        let test = RequestStartTransactionRequest {
+        let test = RequestStartTransactionRequest::<0, 0, 0, 0, 0, 0> {
             evse_id: Some(0),
             remote_start_id: 0,
-            id_token: IdTokenType {
+            id_token: IdTokenType::<0> {
                 id_token: "id_token",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "",
                     kind: "",
-                }]),
+                }].into()),
             },
             charging_profile: Some(ChargingProfileType {
                 id: 0,
@@ -2465,7 +2465,7 @@ mod tests {
                         limit: 0.0,
                         number_phases: Some(1),
                         phase_to_use: Some(1),
-                    }],
+                    }].into(),
                     sales_tariff: Some(SalesTariffType {
                         id: Some(1),
                         sales_tariff_description: Some(""),
@@ -2482,19 +2482,19 @@ mod tests {
                                     cost_kind: CostKindEnumType::CarbonDioxideEmission,
                                     amount: 0,
                                     amount_multiplier: Some(1),
-                                }],
-                            }]),
-                        }],
+                                }].into(),
+                            }].into()),
+                        }].into(),
                     }),
-                }],
+                }].into(),
             }),
-            group_id_token: Some(IdTokenType {
+            group_id_token: Some(IdTokenType::<0> {
                 id_token: "id_token",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "",
                     kind: "",
-                }]),
+                }].into()),
             }),
         };
         let schema = include_str!("schemas/v2.0.1/RequestStartTransactionRequest.json");
@@ -2615,21 +2615,21 @@ mod tests {
             expiry_date_time: Utc::now(),
             connector_type: Some(ConnectorEnumType::CCCS1),
             evse_id: Some(0),
-            id_token: IdTokenType {
+            id_token: IdTokenType::<0> {
                 id_token: "",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "",
                     kind: "",
-                }]),
+                }].into()),
             },
-            group_id_token: Some(IdTokenType {
+            group_id_token: Some(IdTokenType::<0> {
                 id_token: "",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "",
                     kind: "",
-                }]),
+                }].into()),
             }),
         };
         let schema = include_str!("schemas/v2.0.1/ReserveNowRequest.json");
@@ -2746,7 +2746,7 @@ mod tests {
     }
     #[test]
     fn validate_send_local_list_request() {
-        let test = SendLocalListRequest {
+        let test = SendLocalListRequest::<0, 0, 0> {
             version_number: 0,
             update_type: UpdateEnumType::Differential,
             local_authorization_list: Some(vec![AuthorizationData {
@@ -2755,15 +2755,15 @@ mod tests {
                     cache_expiry_date_time: Some(Utc::now()),
                     charging_priority: Some(0),
                     language1: Some("lang1"),
-                    evse_id: Some(vec![1, 2, 3]),
+                    evse_id: Some(vec![1, 2, 3].into()),
                     language2: Some("lang2"),
-                    group_id_token: Some(IdTokenType {
+                    group_id_token: Some(IdTokenType::<0> {
                         id_token: "id_token",
                         kind: IdTokenEnumType::Central,
                         additional_info: Some(vec![AdditionalInfoType {
                             additional_id_token: "additional_id_token",
                             kind: "type",
-                        }]),
+                        }].into()),
                     }),
                     personal_message: Some(MessageContentType {
                         format: MessageFormatEnumType::ASCII,
@@ -2771,15 +2771,15 @@ mod tests {
                         content: "Hello, world!",
                     }),
                 }),
-                id_token: IdTokenType {
+                id_token: IdTokenType::<0> {
                     id_token: "",
                     kind: IdTokenEnumType::Central,
                     additional_info: Some(vec![AdditionalInfoType {
                         additional_id_token: "additional_id_token",
                         kind: "type",
-                    }]),
+                    }].into()),
                 },
-            }]),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/SendLocalListRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -2818,7 +2818,7 @@ mod tests {
     }
     #[test]
     fn validate_set_charging_profile_request() {
-        let test = SetChargingProfileRequest {
+        let test = SetChargingProfileRequest::<0, 0, 0, 0, 0> {
             evse_id: 0,
             charging_profile: ChargingProfileType {
                 id: 0,
@@ -2841,7 +2841,7 @@ mod tests {
                         limit: 0.0,
                         number_phases: Some(0),
                         phase_to_use: Some(0),
-                    }],
+                    }].into(),
                     sales_tariff: Some(SalesTariffType {
                         id: Some(0),
                         sales_tariff_description: Some(""),
@@ -2858,11 +2858,11 @@ mod tests {
                                     cost_kind: CostKindEnumType::CarbonDioxideEmission,
                                     amount: 0,
                                     amount_multiplier: Some(0),
-                                }],
-                            }]),
-                        }],
+                                }].into(),
+                            }].into()),
+                        }].into(),
                     }),
-                }],
+                }].into(),
             },
         };
         let schema = include_str!("schemas/v2.0.1/SetChargingProfileRequest.json");
@@ -3105,7 +3105,7 @@ mod tests {
     }
     #[test]
     fn validate_set_variable_monitoring_request() {
-        let test = SetVariableMonitoringRequest {
+        let test = SetVariableMonitoringRequest::<0> {
             set_monitoring_data: vec![SetMonitoringDataType {
                 id: Some(0),
                 transaction: Some(false),
@@ -3124,7 +3124,7 @@ mod tests {
                     name: "",
                     instance: Some(""),
                 },
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/SetVariableMonitoringRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -3141,7 +3141,7 @@ mod tests {
     }
     #[test]
     fn validate_set_variable_monitoring_response() {
-        let test = SetVariableMonitoringResponse {
+        let test = SetVariableMonitoringResponse::<0> {
             set_monitoring_result: vec![SetMonitoringResultType {
                 id: Some(0),
                 status: SetMonitoringStatusEnumType::Accepted,
@@ -3163,7 +3163,7 @@ mod tests {
                     reason_code: "",
                     additional_info: Some(""),
                 }),
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/SetVariableMonitoringResponse.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -3180,7 +3180,7 @@ mod tests {
     }
     #[test]
     fn validate_set_variables_request() {
-        let test = SetVariablesRequest {
+        let test = SetVariablesRequest::<0> {
             set_variable_data: vec![SetVariableDataType {
                 attribute_type: Some(AttributeEnumType::Actual),
                 attribute_value: "",
@@ -3196,7 +3196,7 @@ mod tests {
                     name: "",
                     instance: Some(""),
                 },
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/SetVariablesRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -3213,7 +3213,7 @@ mod tests {
     }
     #[test]
     fn validate_set_variables_response() {
-        let test = SetVariablesResponse {
+        let test = SetVariablesResponse::<0> {
             set_variable_result: vec![SetVariableResultType {
                 attribute_type: Some(AttributeEnumType::Actual),
                 attribute_status: SetVariableStatusEnumType::Accepted,
@@ -3233,7 +3233,7 @@ mod tests {
                     reason_code: "",
                     additional_info: Some(""),
                 }),
-            }],
+            }].into(),
         };
         let schema = include_str!("schemas/v2.0.1/SetVariablesResponse.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -3328,7 +3328,7 @@ mod tests {
     }
     #[test]
     fn validate_transaction_event_request() {
-        let test = TransactionEventRequest {
+        let test = TransactionEventRequest::<0, 0, 0> {
             event_type: TransactionEventEnumType::Ended,
             timestamp: Utc::now(),
             trigger_reason: TriggerReasonEnumType::Authorized,
@@ -3344,13 +3344,13 @@ mod tests {
                 stopped_reason: Some(ReasonEnumType::DeAuthorized),
                 remote_start_id: Some(0),
             },
-            id_token: Some(IdTokenType {
+            id_token: Some(IdTokenType::<0> {
                 id_token: "",
                 kind: IdTokenEnumType::Central,
                 additional_info: Some(vec![AdditionalInfoType {
                     additional_id_token: "",
                     kind: "",
-                }]),
+                }].into()),
             }),
             evse: Some(EVSEType {
                 id: 0,
@@ -3374,8 +3374,8 @@ mod tests {
                         unit: Some("unit"),
                         multiplier: Some(0),
                     }),
-                }],
-            }]),
+                }].into(),
+            }].into()),
         };
         let schema = include_str!("schemas/v2.0.1/TransactionEventRequest.json");
         let schema = serde_json::from_str(&schema).unwrap();
@@ -3392,7 +3392,7 @@ mod tests {
     }
     #[test]
     fn validate_transaction_event_response() {
-        let test = TransactionEventResponse {
+        let test = TransactionEventResponse::<0, 0> {
             total_cost: Some(0.0),
             charging_priority: Some(0),
             id_token_info: Some(IdTokenInfoType {
@@ -3400,15 +3400,15 @@ mod tests {
                 cache_expiry_date_time: Some(Utc::now()),
                 charging_priority: Some(0),
                 language1: Some(""),
-                evse_id: Some(vec![1]),
+                evse_id: Some(vec![1].into()),
                 language2: Some(""),
-                group_id_token: Some(IdTokenType {
+                group_id_token: Some(IdTokenType::<0> {
                     id_token: "",
                     kind: IdTokenEnumType::Central,
                     additional_info: Some(vec![AdditionalInfoType {
                         additional_id_token: "additional_id_token",
                         kind: "type",
-                    }]),
+                    }].into()),
                 }),
                 personal_message: Some(MessageContentType {
                     format: MessageFormatEnumType::ASCII,
